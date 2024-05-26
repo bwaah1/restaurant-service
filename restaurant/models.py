@@ -14,6 +14,8 @@ class DishType(models.Model):
 
 
 class Cook(AbstractUser):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     years_of_experience = models.IntegerField(default=0)
 
     class Meta:

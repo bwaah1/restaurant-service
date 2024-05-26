@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Dish Type List
+    <a href="{% url "restaurant:index" %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+  <form action="" method="get" class="form-inline">
+    {{ search_form|crispy }}
+    <input type="submit" class="btn btn-primary" value="Search">
+  </form>
+  <br>
+  {% if dishtype_list %}
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Dish type</th>
+      </tr>
+      {% for type in dishtype_list %}
+        <tr>
+          <td>{{ type.id }}</td>
+          <td>{{ type.name }}</td>
+        </tr>
+      {% endfor %}
+
+    </table>
+  {% else %}
+    <p>There are no dish types in the service.</p>
+  {% endif %}
+{% endblock %}
