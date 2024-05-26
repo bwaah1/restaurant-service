@@ -28,8 +28,8 @@ class DriverAdmin(UserAdmin):
 
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
+    list_display = ("name", "dish_type",)
     search_fields = ("name",)
-    list_filter = ("dish_type",)
 
 
 admin.site.register(DishType)
