@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from restaurant.models import Cook
+from restaurant.models import Cook, DishType
 
 
 class CookModelSearchForm(forms.ModelForm):
@@ -20,3 +20,11 @@ class CookCreationForm(UserCreationForm):
             "first_name",
             "last_name",
         )
+
+
+class DishTypeModelSearchForm(forms.ModelForm):
+    name = forms.CharField(max_length=255, required=False, label="")
+
+    class Meta:
+        model = DishType
+        fields = ['name']
