@@ -18,11 +18,24 @@
       <tr>
         <th>ID</th>
         <th>Dish type</th>
+        <th>Update</th>
+        <th>Delete</th>
       </tr>
       {% for type in dish_type_list %}
         <tr>
           <td>{{ type.id }}</td>
           <td>{{ type.name }}</td>
+          <td>
+            <a href="{% url 'restaurant:dish-type-update' pk=type.id %}">
+              Update
+            </a>
+          </td>
+          <td>
+            <a style="color: red"
+               href="{% url 'restaurant:dish-type-delete' pk=type.id %}">
+              Delete
+            </a>
+          </td>
         </tr>
       {% endfor %}
 

@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
-from restaurant.forms import CookModelSearchForm, CookCreationForm, DishTypeModelSearchForm
+from restaurant.forms import CookModelSearchForm, CookCreationForm, DishTypeModelSearchForm, DishModelSearchForm
 from restaurant.models import DishType, Dish, Cook
 
 
@@ -105,3 +105,38 @@ class DishTypeCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "restaurant/dish_type_form.html"
     success_url = reverse_lazy("restaurant:dish-type-list")
 
+
+class DishTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = DishType
+    fields = ["name"]
+    success_url = reverse_lazy("restaurant:dish-type-list")
+    template_name = "restaurant/dish_type_form.html"
+
+
+class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = DishType
+    success_url = reverse_lazy("restaurant:dish-type-list")
+    template_name = "restaurant/dish_type_confirm_delete.html"
+
+
+class DishListView(LoginRequiredMixin, generic.ListView):
+    model = Dish
+    queryset = Dish.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs) -> QuerySet:
+        context = super(DishListView, self).get_context_data(**kwargs)
+
+        name = self.request.GET.get("name", "")
+
+        context["search_form"] = DishModelSearchForm(initial={"name": name})
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Dish.objects.all()
+
+        name = self.request.GET.get("name")
+
+        if name:
+            return queryset.filter(name__icontains=name)
+
+        return queryset
