@@ -13,16 +13,25 @@
     <input type="submit" class="btn btn-primary" value="Search">
   </form>
   <br>
-  {% if car_list %}
+  {% if dish_list %}
     <ul>
-      {% for car in car_list %}
+      {% for dish in dish_list %}
         <li>
-          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
-          {{ car.model }} ({{ car.manufacturer.name }})
+          <a href="{% url "restaurant:dish-detail" pk=dish.id %}">{{ dish.id }} <b>{{ dish.name }}</b></a>
+
+          <br>
+          {{ dish.description }}
+          <br>
+          {% if dish.cooks %}
+            Cooks:
+            {% for cook in dish.cooks.all %}
+              {{ cook.first_name }} {{ cook.last_name }}
+            {% endfor %}
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>There are no cars in taxi</p>
+    <p>There are no dishes in service</p>
   {% endif %}
 {% endblock %}

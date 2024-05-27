@@ -1,12 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from restaurant.forms import CookModelSearchForm, CookCreationForm, DishTypeModelSearchForm, DishModelSearchForm
+from restaurant.forms import (
+    CookModelSearchForm,
+    CookCreationForm,
+    DishTypeModelSearchForm,
+    DishModelSearchForm,
+    DishCreationForm
+)
 from restaurant.models import DishType, Dish, Cook
 
 
@@ -121,7 +127,7 @@ class DishTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DishListView(LoginRequiredMixin, generic.ListView):
     model = Dish
-    queryset = Dish.objects.all()
+    queryset = Dish.objects.select_related("dish_type")
 
     def get_context_data(self, *, object_list=None, **kwargs) -> QuerySet:
         context = super(DishListView, self).get_context_data(**kwargs)
@@ -132,7 +138,7 @@ class DishListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self) -> QuerySet:
-        queryset = Dish.objects.all()
+        queryset = Dish.objects.select_related("dish_type")
 
         name = self.request.GET.get("name")
 
@@ -140,3 +146,37 @@ class DishListView(LoginRequiredMixin, generic.ListView):
             return queryset.filter(name__icontains=name)
 
         return queryset
+
+
+class DishDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Dish
+
+
+@login_required
+def toggle_assign_to_dish(request, pk) -> HttpResponse:
+    cook = Cook.objects.get(id=request.user.id)
+    if (
+            Dish.objects.get(id=pk) in cook.dishes.all()
+    ):
+        cook.dishes.remove(pk)
+    else:
+        cook.dishes.add(pk)
+    return HttpResponseRedirect(reverse_lazy("restaurant:dish-detail", args=[pk]))
+
+
+class DishCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Dish
+    form_class = DishCreationForm
+
+
+class DishUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Dish
+    form_class = DishCreationForm
+
+    def get_success_url(self) -> str:
+        return reverse("restaurant:dish-detail", kwargs={"pk": self.object.pk})
+
+
+class DishDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Dish
+    success_url = reverse_lazy("restaurant:dish-list")

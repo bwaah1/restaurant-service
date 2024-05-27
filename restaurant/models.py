@@ -40,3 +40,6 @@ class Dish(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def get_absolute_url(self) -> str:
+        return reverse("restaurant:dish-detail", kwargs={"pk": self.pk})

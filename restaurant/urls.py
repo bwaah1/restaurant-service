@@ -10,7 +10,12 @@ from .views import (
     DishTypeCreateView,
     DishTypeUpdateView,
     DishTypeDeleteView,
-    DishListView
+    DishListView,
+    DishDetailView,
+    toggle_assign_to_dish,
+    DishCreateView,
+    DishUpdateView,
+    DishDeleteView,
 )
 
 urlpatterns = [
@@ -65,26 +70,31 @@ urlpatterns = [
         DishListView.as_view(),
         name="dish-list",
     ),
-    # path(
-    #     "dishes/<int:pk>/",
-    #     DishDetailView.as_view(),
-    #     name="dish-detail",
-    # ),
-    # path(
-    #     "dishes/create/",
-    #     DishCreateView.as_view(),
-    #     name="dish-create",
-    # ),
-    # path(
-    #     "dishes/<int:pk>/update/",
-    #     DishUpdateView.as_view(),
-    #     name="dish-update",
-    # ),
-    # path(
-    #     "dish/<int:pk>/delete/",
-    #     DishDeleteView.as_view(),
-    #     name="dish-delete",
-    # ),
+    path(
+        "dishes/<int:pk>/",
+        DishDetailView.as_view(),
+        name="dish-detail",
+    ),
+    path(
+        "dishes/<int:pk>/toggle-assign/",
+        toggle_assign_to_dish,
+        name="toggle-dish-assign",
+    ),
+    path(
+        "dishes/create/",
+        DishCreateView.as_view(),
+        name="dish-create",
+    ),
+    path(
+        "dishes/<int:pk>/update/",
+        DishUpdateView.as_view(),
+        name="dish-update",
+    ),
+    path(
+        "dish/<int:pk>/delete/",
+        DishDeleteView.as_view(),
+        name="dish-delete",
+    ),
 ]
 
 app_name = "restaurant"

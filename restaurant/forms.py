@@ -36,3 +36,16 @@ class DishModelSearchForm(forms.ModelForm):
     class Meta:
         model = Dish
         fields = ['name']
+
+
+class DishCreationForm(forms.ModelForm):
+    cooks = forms.ModelMultipleChoiceField(
+        queryset=Cook.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Cooks"
+    )
+
+    class Meta:
+        model = Dish
+        fields = "__all__"
