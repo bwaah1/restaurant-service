@@ -55,6 +55,15 @@ To get a local copy up and running, follow these steps:
    
 8. Open your web browser and visit http://localhost:8000 to see the application running.
 
+## Created Superuser
+
+- Username: admin.user
+- Password: 1qazcde3
+
+## Deployment
+
+The project is deployed and can be accessed at [Restaurant Service](https://restaurant-service-nln8.onrender.com/).
+
 ## Roadmap
 
 - [ ] Add more detailed documentation
