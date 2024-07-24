@@ -75,10 +75,6 @@ The project is deployed and can be accessed at [Restaurant Service](https://rest
 
 Contributions are welcome! If you have any suggestions or improvements, please open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License.
-
 ## Contact
 
 Chyk Ivan - chykivan@gmail.com
