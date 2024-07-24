@@ -17,7 +17,7 @@ To get a local copy up and running, follow these steps:
 ### Prerequisites
 
 - Python (version 3.12)
-- Django (version X.X.X)
+- Django (version 5.0.6)
 
 ### Installation
 
